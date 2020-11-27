@@ -1,14 +1,9 @@
 import 'dart:async';
-import 'dart:isolate';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 import 'appbarlogo.dart';
 import 'package:device_apps/device_apps.dart';
-
-//import 'package:qrscan/qrscan.dart' as scanner;
 
 class Dashboard extends StatefulWidget {
   @override
