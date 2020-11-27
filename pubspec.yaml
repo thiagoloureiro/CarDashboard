@@ -23,15 +23,21 @@ environment:
 dependencies:
   device_apps: "^1.2.0"
   geolocator: ^6.1.8
+  geocoding: ^1.0.5
   rflutter_alert: ^1.1.0
   android_alarm_manager: ^0.4.5
+  flutter_launcher_icons: "^0.8.1"
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+
+flutter_icons:
+  image_path: "images/apps.png" 
+  android: true
+  ios: true
 
 dev_dependencies:
   flutter_test:
@@ -54,8 +60,10 @@ flutter:
     - images/google-maps.png
     - images/waze.png
     - images/youtube.png
-  #   - images/a_dot_ham.jpeg
-
+    - images/whatsapp.png
+    - images/apps.png  
+    - images/chrome.png
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

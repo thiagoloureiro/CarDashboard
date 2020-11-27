@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+
 import 'appbarlogo.dart';
 import 'package:device_apps/device_apps.dart';
 
@@ -12,8 +14,15 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
+  String appBarTitle = "Title1";
+  String _currentAddress;
   int get helloAlarmID => null;
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -457,7 +466,9 @@ class _DashboardState extends State<Dashboard> {
                               IconButton(
                                 icon: Image.asset('images/waze.png'),
                                 iconSize: 100,
-                                onPressed: () {},
+                                onPressed: () {
+                                  DeviceApps.openApp('com.waze');
+                                },
                               ),
                               SizedBox(height: 10),
                               Text(
@@ -478,14 +489,8 @@ class _DashboardState extends State<Dashboard> {
                                 icon: Image.asset('images/google-maps.png'),
                                 iconSize: 100,
                                 onPressed: () async {
-                                  Position position =
-                                      await Geolocator.getCurrentPosition(
-                                          desiredAccuracy:
-                                              LocationAccuracy.high);
-
-                                  Timer.periodic(Duration(seconds: 2), (timer) {
-                                    print(DateTime.now().second);
-                                  });
+                                  DeviceApps.openApp(
+                                      'com.google.android.apps.maps');
                                 },
                               ),
                               SizedBox(height: 10),
@@ -513,7 +518,8 @@ class _DashboardState extends State<Dashboard> {
                                 icon: Image.asset('images/youtube.png'),
                                 iconSize: 100,
                                 onPressed: () {
-                                  DeviceApps.openApp('com.frandroid.app');
+                                  DeviceApps.openApp(
+                                      'com.google.android.youtube');
                                 },
                               ),
                               SizedBox(height: 25),
@@ -532,15 +538,15 @@ class _DashboardState extends State<Dashboard> {
                           child: Column(
                             children: <Widget>[
                               IconButton(
-                                icon: Image.asset('images/youtube.png'),
+                                icon: Image.asset('images/whatsapp.png'),
                                 iconSize: 100,
                                 onPressed: () {
-                                  DeviceApps.openApp('com.frandroid.app');
+                                  DeviceApps.openApp('whatsapp');
                                 },
                               ),
                               SizedBox(height: 25),
                               Text(
-                                'Youtube',
+                                'WhatsApp',
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -554,15 +560,15 @@ class _DashboardState extends State<Dashboard> {
                           child: Column(
                             children: <Widget>[
                               IconButton(
-                                icon: Image.asset('images/youtube.png'),
+                                icon: Image.asset('images/chrome.png'),
                                 iconSize: 100,
                                 onPressed: () {
-                                  DeviceApps.openApp('com.frandroid.app');
+                                  DeviceApps.openApp('com.android.chrome');
                                 },
                               ),
                               SizedBox(height: 25),
                               Text(
-                                'Youtube',
+                                'Chrome',
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
@@ -576,5 +582,35 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ]),
                 ))));
+  }
+
+  _getAddressFromLatLng(Position _currentPosition) async {
+    try {
+      List<Placemark> p = await placemarkFromCoordinates(
+          _currentPosition.latitude, _currentPosition.longitude);
+
+      Placemark place = p[0];
+
+      setState(() {
+        _currentAddress =
+            "${place.locality}, ${place.postalCode}, ${place.country}";
+        BaseAppBarLogo.city = _currentAddress;
+        print(_currentAddress);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> _getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    //  Timer.periodic(Duration(seconds: 2),
+    //       (timer) async {
+    //    print(DateTime.now().second);
+    //  });
+
+    await _getAddressFromLatLng(position);
   }
 }

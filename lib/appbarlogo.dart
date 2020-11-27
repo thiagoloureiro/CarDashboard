@@ -5,35 +5,49 @@ class BaseAppBarLogo extends StatelessWidget implements PreferredSizeWidget {
   final Text title;
   final AppBar appBar;
   final List<Widget> widgets;
+  static String city = "CarDashboard";
 
   /// you can add more fields that meet your needs
 
-  const BaseAppBarLogo({Key key, this.title, this.appBar, this.widgets})
+  BaseAppBarLogo({Key key, this.title, this.appBar, this.widgets, city})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(actions: [
-      IconButton(
-        iconSize: 30.0,
-        icon: Icon(
-          Icons.settings,
-          //  color: Colors.black,
-        ),
-        onPressed: () {},
-      ),
-      Builder(
-          builder: (context) => IconButton(
-                iconSize: 36.0,
-                icon: Icon(
-                  Icons.menu,
-                  //      color: Colors.black,
-                ),
-                onPressed: () => Scaffold.of(context).openEndDrawer(),
-              )),
-    ]);
+    return AppBar(
+        title: Text(city,
+            style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),
+        automaticallyImplyLeading: false,
+        actions: [
+          Text("Weather: Rain, +2°",
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),
+          IconButton(
+            iconSize: 30.0,
+            icon: Icon(
+              Icons.settings,
+              //  color: Colors.black,
+            ),
+            onPressed: () {},
+          ),
+          Builder(
+              builder: (context) => IconButton(
+                    iconSize: 36.0,
+                    icon: Icon(
+                      Icons.menu,
+                      //      color: Colors.black,
+                    ),
+                    onPressed: () => Scaffold.of(context).openEndDrawer(),
+                  )),
+        ]);
   }
 
   @override
   Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
+
+  static _changeCity(String currentPosition) {
+    city = currentPosition;
+  }
 }
