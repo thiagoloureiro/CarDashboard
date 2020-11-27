@@ -541,7 +541,7 @@ class _DashboardState extends State<Dashboard> {
                                 icon: Image.asset('images/whatsapp.png'),
                                 iconSize: 100,
                                 onPressed: () {
-                                  DeviceApps.openApp('whatsapp');
+                                  DeviceApps.openApp('com.whatsapp');
                                 },
                               ),
                               SizedBox(height: 25),
