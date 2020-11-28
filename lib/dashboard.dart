@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
 import 'appbarlogo.dart';
 import 'package:device_apps/device_apps.dart';
@@ -596,7 +597,17 @@ class _DashboardState extends State<Dashboard> {
       setState(() {
         _currentAddress =
             "${place.locality}, ${place.postalCode}, ${place.country}";
-        BaseAppBarLogo.city = _currentAddress;
+        //BaseAppBarLogo.city = _currentAddress;
+        DateTime now = DateTime.now();
+        DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm:ss');
+        String formatted = formatter.format(now);
+
+        BaseAppBarLogo.city = "Speed: " +
+            ((_currentPosition.speed) * (60 * 60) / 1000).toString() +
+            " km/h - " +
+            _currentAddress +
+            " - " +
+            formatted;
         print(_currentAddress);
       });
     } catch (e) {
@@ -607,7 +618,7 @@ class _DashboardState extends State<Dashboard> {
   Future<void> _getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-
+    print(position.speed);
     await _getAddressFromLatLng(position);
   }
 }
