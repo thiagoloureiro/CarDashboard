@@ -20,7 +20,9 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation();
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      _getCurrentLocation();
+    });
   }
 
   @override
@@ -605,11 +607,6 @@ class _DashboardState extends State<Dashboard> {
   Future<void> _getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-
-    //  Timer.periodic(Duration(seconds: 2),
-    //       (timer) async {
-    //    print(DateTime.now().second);
-    //  });
 
     await _getAddressFromLatLng(position);
   }
