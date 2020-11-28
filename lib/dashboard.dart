@@ -601,9 +601,10 @@ class _DashboardState extends State<Dashboard> {
         DateTime now = DateTime.now();
         DateFormat formatter = DateFormat('dd/MM/yyyy HH:mm:ss');
         String formatted = formatter.format(now);
+        var speed = ((_currentPosition.speed) * (60 * 60) / 1000).toInt();
 
         BaseAppBarLogo.city = "Speed: " +
-            ((_currentPosition.speed) * (60 * 60) / 1000).toString() +
+            speed.toString() +
             " km/h - " +
             _currentAddress +
             " - " +
