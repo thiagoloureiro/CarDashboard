@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     new Future.delayed(
-        const Duration(milliseconds: 1000),
+        const Duration(milliseconds: 500),
         () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Dashboard()),
@@ -47,19 +47,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors,
       body: Container(
           child: Center(
         child: new Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              //   new Image.asset(
-              //     'images/abb-logo.png',
-              //     fit: BoxFit.cover,
-              //     repeat: ImageRepeat.noRepeat,
-              //    width: 170.0,
-              //  ),
+              new Image.asset(
+                'images/apps.png',
+                fit: BoxFit.cover,
+                repeat: ImageRepeat.noRepeat,
+                width: 170.0,
+              ),
             ]),
       )),
     );

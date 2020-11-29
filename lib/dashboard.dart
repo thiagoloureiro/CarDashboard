@@ -19,10 +19,11 @@ class _DashboardState extends State<Dashboard> {
   String _currentAddress;
   int get helloAlarmID => null;
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
+    await _getCurrentLocation();
     Timer.periodic(Duration(seconds: 5), (timer) async {
-      _getCurrentLocation();
+      await _getCurrentLocation();
     });
   }
 
