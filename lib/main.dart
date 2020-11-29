@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     new Future.delayed(
-        const Duration(milliseconds: 1000),
+        const Duration(milliseconds: 10),
         () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Dashboard()),
