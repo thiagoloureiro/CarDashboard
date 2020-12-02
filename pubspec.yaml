@@ -28,6 +28,7 @@ dependencies:
   android_alarm_manager: ^0.4.5
   flutter_launcher_icons: "^0.8.1"
   intl: ^0.16.1
+  pushy_flutter: ^1.1.6
   flutter:
     sdk: flutter
 

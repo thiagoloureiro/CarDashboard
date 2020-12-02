@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dashboard.dart';
+import 'package:flutter/services.dart';
+import 'package:pushy_flutter/pushy_flutter.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -35,6 +37,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
+    Pushy.listen();
+
+    // Register the user for push notifications
+    pushyRegister();
     super.initState();
     new Future.delayed(
         const Duration(milliseconds: 500),
@@ -42,6 +48,53 @@ class _MyAppState extends State<MyApp> {
               context,
               MaterialPageRoute(builder: (context) => Dashboard()),
             ));
+  }
+
+  Future pushyRegister() async {
+    try {
+      // Register the user for push notifications
+      String deviceToken = await Pushy.register();
+
+      // Print token to console/logcat
+      print('Device token: $deviceToken');
+
+      // Display an alert with the device token
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                title: Text('Pushy'),
+                content: Text('Pushy device token: $deviceToken'),
+                actions: [
+                  FlatButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .pop('dialog');
+                      })
+                ]);
+          });
+
+      // Optionally send the token to your backend server via an HTTP GET request
+      // ...
+    } on PlatformException catch (error) {
+      // Display an alert with the error message
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+                title: Text('Error'),
+                content: Text(error.message),
+                actions: [
+                  FlatButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .pop('dialog');
+                      })
+                ]);
+          });
+    }
   }
 
   @override
