@@ -42,7 +42,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         
-        if(System.getenv('APPCENTER_BUILD_ID1') != null){       
+        if(System.getenv('APPCENTER_BUILD_ID') != null){       
             versionCode System.getenv('APPCENTER_BUILD_ID')?.toInteger()
         }
         else{
