@@ -39,9 +39,9 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.cardashboard"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
-        versionCode flutterVersionCode.toInteger()
+        versionCode System.getenv('APPCENTER_BUILD_ID').toInteger()
         versionName flutterVersionName
     }
 
