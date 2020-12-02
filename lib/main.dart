@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
       print('Device token: $deviceToken');
 
       // Display an alert with the device token
-      showDialog(
+      /*  showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
@@ -98,7 +98,7 @@ class _MyAppState extends State<MyApp> {
                       })
                 ]);
           });
-
+*/
       // Optionally send the token to your backend server via an HTTP GET request
       // ...
     } on PlatformException catch (error) {
