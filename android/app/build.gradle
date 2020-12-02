@@ -41,7 +41,13 @@ android {
         applicationId "com.cardashboard"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode flutterVersionCode.toInteger()
+        
+        if(System.getenv('APPCENTER_BUILD_ID') != null){       
+            versionCode System.getenv('APPCENTER_BUILD_ID')?.toInteger()
+        }
+        else{
+            versionCode flutterVersionCode.toInteger()
+        }
         versionName flutterVersionName
     }
 
