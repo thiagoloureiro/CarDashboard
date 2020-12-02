@@ -4,6 +4,27 @@ import 'dashboard.dart';
 import 'package:flutter/services.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 
+// Please place this code in main.dart,
+// After the import statements, and outside any Widget class (top-level)
+
+void backgroundNotificationListener(Map<String, dynamic> data) {
+  // Print notification payload data
+  print('Received notification: $data');
+
+  // Notification title
+  String notificationTitle = 'MyApp';
+
+  // Attempt to extract the "message" property from the payload: {"message":"Hello World!"}
+  String notificationText = data['message'] ?? 'Hello World!';
+
+  // Android: Displays a system notification
+  // iOS: Displays an alert dialog
+  Pushy.notify(notificationTitle, notificationText, data);
+
+  // Clear iOS app badge number
+  Pushy.clearBadge();
+}
+
 void main() {
   runApp(new MaterialApp(
     themeMode: ThemeMode.system, // Change it as you want
@@ -38,6 +59,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     Pushy.listen();
+
+    // Listen for push notifications received
+    Pushy.setNotificationListener(backgroundNotificationListener);
 
     // Register the user for push notifications
     pushyRegister();
