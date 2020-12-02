@@ -22,7 +22,7 @@ class _DashboardState extends State<Dashboard> {
   Future<void> initState() {
     super.initState();
     _getCurrentLocation();
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    Timer.periodic(Duration(seconds: 1), (timer) async {
       await _getCurrentLocation();
     });
   }
@@ -31,7 +31,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-          return new Future(() => false);
+          //  return new Future(() => false);
         },
         child: Scaffold(
             endDrawer: Container(

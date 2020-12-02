@@ -19,11 +19,11 @@ class BaseAppBarLogo extends StatelessWidget implements PreferredSizeWidget {
             style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),
         automaticallyImplyLeading: false,
         actions: [
-          Text("Weather: Rain, +2°",
+          /*  Text("Weather: Rain, +2°",
               textAlign: TextAlign.center,
               textDirection: TextDirection.rtl,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),*/
           IconButton(
             iconSize: 30.0,
             icon: Icon(
