@@ -66,9 +66,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _getCurrentLocation();
-    Timer.periodic(Duration(seconds: 1), (timer) async {
-      await _getCurrentLocation();
-    });
+    // Timer.periodic(Duration(seconds: 1), (timer) async {
+    //   await _getCurrentLocation();
+    // });
 
     Pushy.listen();
 
@@ -392,9 +392,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _getCurrentLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    // print(position.speed);
-    await _getAddressFromLatLng(position);
+    StreamSubscription<Position> positionStream =
+        Geolocator.getPositionStream().listen((Position position) async {
+      await _getAddressFromLatLng(position);
+      //   print(position == null
+      //       ? 'Unknown'
+      //       : position.latitude.toString() +
+      //           ', ' +
+      //           position.longitude.toString());
+    });
+
+    //print(position.speed);
   }
 }
