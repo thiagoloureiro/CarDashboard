@@ -77,6 +77,7 @@ class _MyAppState extends State<MyApp> {
 
     // Register the user for push notifications
     pushyRegister();
+
     super.initState();
     /* new Future.delayed(
         const Duration(milliseconds: 500),
@@ -111,6 +112,34 @@ class _MyAppState extends State<MyApp> {
                 ]);
           });
 */
+
+      try {
+        // Make sure the user is registered
+        if (await Pushy.isRegistered()) {
+          // Subscribe the user to a topic
+          await Pushy.subscribe('cardashboard');
+
+          // Subscribe successful
+          print('Subscribed to topic successfully');
+        }
+      } on PlatformException catch (error) {
+        // Subscribe failed, notify the user
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                  title: Text('Subscribe failed'),
+                  content: Text(error.message),
+                  actions: [
+                    FlatButton(
+                        child: Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pop('dialog');
+                        })
+                  ]);
+            });
+      }
       // Optionally send the token to your backend server via an HTTP GET request
       // ...
     } on PlatformException catch (error) {
@@ -395,6 +424,7 @@ class _MyAppState extends State<MyApp> {
     StreamSubscription<Position> positionStream =
         Geolocator.getPositionStream().listen((Position position) async {
       await _getAddressFromLatLng(position);
+
       //   print(position == null
       //       ? 'Unknown'
       //       : position.latitude.toString() +
