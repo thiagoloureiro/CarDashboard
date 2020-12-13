@@ -1,12 +1,11 @@
 import 'dart:async';
+import 'package:cardashboard/settings.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'appbarlogo.dart';
-import 'dashboard.dart';
 import 'package:flutter/services.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 
@@ -225,10 +224,9 @@ class _MyAppState extends State<MyApp> {
                       ),
                     ),
                     onTap: () {
-                      // Update the state of the app
-                      // ...
-                      // Then close the drawer
                       Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Settings()));
                     },
                   )
                 ],
