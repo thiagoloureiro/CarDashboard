@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(Settings());
 
@@ -50,18 +51,32 @@ class _MyAppState extends State<Settings> {
                   appBarTheme: AppBarTheme(brightness: Brightness.dark)),
               home: Scaffold(
                 appBar: AppBar(
-                  leading: IconButton(
-                    iconSize: 30.0,
-                    icon: Icon(
-                      Icons.arrow_back,
-                      //  color: Colors.red,
+                    leading: IconButton(
+                      iconSize: 30.0,
+                      icon: Icon(
+                        Icons.arrow_back,
+                        //  color: Colors.red,
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  title: Text("Installed Apps"),
-                ),
+                    title: Text("Installed Apps"),
+                    actions: [
+                      /*  Text("Weather: Rain, +2°",
+              textAlign: TextAlign.center,
+              textDirection: TextDirection.rtl,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),*/
+                      IconButton(
+                          iconSize: 30.0,
+                          icon: Icon(Icons.save
+                              //  color: Colors.black,
+                              ),
+                          onPressed: () {
+                            _save(['test', 'test']);
+                          })
+                    ]),
                 body: ListView(
                   children: List.generate(paints.length, (index) {
                     return ListTile(
@@ -122,6 +137,22 @@ class _MyAppState extends State<Settings> {
     apps.sort((a, b) => a.toString().compareTo(b.toString()));
 
     return apps;
+  }
+
+  _read() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'app_list';
+    final value = prefs.getStringList(key) ?? "";
+    print('read: $value');
+  }
+
+  _save(List<String> list) async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'app_list';
+    final value = ['spotify', 'waze', 'maps'];
+    list = value;
+    prefs.setStringList(key, value);
+    print('saved $value');
   }
 }
 

@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.16.1
   pushy_flutter: ^1.1.6
   sizer: ^1.1.7
+  shared_preferences: ^0.5.12
   flutter:
     sdk: flutter
 
