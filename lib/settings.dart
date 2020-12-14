@@ -3,6 +3,8 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'apps.dart';
+
 void main() => runApp(Settings());
 
 class Settings extends StatefulWidget {
@@ -11,16 +13,8 @@ class Settings extends StatefulWidget {
 }
 
 class _MyAppState extends State<Settings> {
+  var appsList = new List<Apps>();
   double padValue = 0;
-
-  List<Paint> paints = <Paint>[
-    Paint(1, 'Red', Colors.red),
-    Paint(2, 'Blue', Colors.blue),
-    Paint(3, 'Green', Colors.green),
-    Paint(4, 'Lime', Colors.lime),
-    Paint(5, 'Indigo', Colors.indigo),
-    Paint(6, 'Yellow', Colors.yellow)
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +22,14 @@ class _MyAppState extends State<Settings> {
         future: getApps(),
         builder: (context, AsyncSnapshot<List<Application>> snapshot) {
           if (snapshot.hasData) {
+            //appsList.clear();
+            if (appsList.isEmpty)
+              for (var app in snapshot.data) {
+                if (app is ApplicationWithIcon) {
+                  // appsList.add(new Apps(1, app.appName, app.icon, app.packageName));
+                }
+              }
+
             //return Text(snapshot.data);
             return MaterialApp(
               themeMode: ThemeMode.system,
@@ -74,19 +76,19 @@ class _MyAppState extends State<Settings> {
                               //  color: Colors.black,
                               ),
                           onPressed: () {
-                            _save(['test', 'test']);
+                            _save();
                           })
                     ]),
                 body: ListView(
-                  children: List.generate(paints.length, (index) {
+                  children: List.generate(appsList.length, (index) {
                     return ListTile(
                       onTap: () {
                         setState(() {
-                          paints[index].selected = !paints[index].selected;
-                          log(paints[index].selected.toString());
+                          appsList[index].selected = !appsList[index].selected;
+                          log(appsList[index].selected.toString());
                         });
                       },
-                      selected: paints[index].selected,
+                      selected: appsList[index].selected,
                       leading: GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTap: () {},
@@ -96,26 +98,24 @@ class _MyAppState extends State<Settings> {
                           padding: EdgeInsets.symmetric(vertical: 4.0),
                           alignment: Alignment.center,
                           child: IconButton(
-                            icon: snapshot.data[index] is ApplicationWithIcon
-                                ? CircleAvatar(
-                                    radius: 44.0,
-                                    backgroundImage: MemoryImage((snapshot
-                                            .data[index] as ApplicationWithIcon)
-                                        .icon),
-                                    backgroundColor: Colors.white,
-                                  )
-                                : null,
+                            icon: CircleAvatar(
+                              radius: 44.0,
+                              backgroundImage:
+                                  MemoryImage(appsList[index].icon),
+                              backgroundColor: Colors.white,
+                            ),
+
                             //Image.asset('images/spotify.png'),
                             onPressed: () {},
                             //iconSize: 50, // MediaQuery.of(context).size.width
                           ),
                         ),
                       ),
-                      title: Text(snapshot.data[index].appName),
-                      subtitle: Text(snapshot.data[index].category.toString()),
+                      title: Text(appsList[index].appName),
+                      //    subtitle: Text(appsList.[index].category.toString()),
                       // Text(paints[index].title),
 
-                      trailing: (paints[index].selected)
+                      trailing: (appsList[index].selected)
                           ? Icon(Icons.check_box)
                           : Icon(Icons.check_box_outline_blank),
                     );
@@ -130,37 +130,62 @@ class _MyAppState extends State<Settings> {
   }
 
   Future<List<Application>> getApps() async {
+    // appsList.clear();
     List<Application> apps = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
         includeSystemApps: false,
         onlyAppsWithLaunchIntent: true);
     apps.sort((a, b) => a.toString().compareTo(b.toString()));
 
+    var selectedApps = await _read();
+
+    if (appsList.isEmpty)
+      for (var app in apps) {
+        if (app is ApplicationWithIcon)
+          appsList.add(new Apps(1, app.appName, app.icon, app.packageName));
+      }
+
+    for (var selectedApp in selectedApps) {
+      for (var app in appsList) {
+        if (app.appName == selectedApp) app.selected = true;
+      }
+    }
+
+/*
+    for (var app in apps) {
+      if (app is ApplicationWithIcon) {
+        if (selectedApps.contains(app.appName)) {
+          var appToAdd = new Apps(1, app.appName, app.icon, app.packageName);
+          appToAdd.selected = true;
+          appsList.add(appToAdd);
+        } else {
+          var appToAdd = new Apps(1, app.appName, app.icon, app.packageName);
+          appToAdd.selected = false;
+          appsList.add(appToAdd);
+        }
+      }
+    }*/
+    // print(apps.length);
     return apps;
   }
 
-  _read() async {
+  Future<List<String>> _read() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'app_list';
     final value = prefs.getStringList(key) ?? "";
-    print('read: $value');
+    return value;
   }
 
-  _save(List<String> list) async {
+  _save() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'app_list';
-    final value = ['spotify', 'waze', 'maps'];
-    list = value;
-    prefs.setStringList(key, value);
-    print('saved $value');
+
+    var selectedApps = new List<String>();
+
+    for (var app in appsList) {
+      if (app.selected) selectedApps.add(app.appName);
+    }
+
+    prefs.setStringList(key, selectedApps);
   }
-}
-
-class Paint {
-  final int id;
-  final String title;
-  final Color colorpicture;
-  bool selected = false;
-
-  Paint(this.id, this.title, this.colorpicture);
 }

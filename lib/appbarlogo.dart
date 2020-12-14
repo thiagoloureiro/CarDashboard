@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cardashboard/settings.dart';
 import 'package:flutter/material.dart';
 
@@ -25,16 +27,7 @@ class BaseAppBarLogo extends StatelessWidget implements PreferredSizeWidget {
               textDirection: TextDirection.rtl,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontWeight: FontWeight.normal, fontSize: 15)),*/
-          IconButton(
-              iconSize: 30.0,
-              icon: Icon(
-                Icons.settings,
-                //  color: Colors.black,
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Settings()));
-              }),
+
           Builder(
               builder: (context) => IconButton(
                     iconSize: 36.0,

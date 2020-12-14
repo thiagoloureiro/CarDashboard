@@ -5,9 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'appbarlogo.dart';
 import 'package:flutter/services.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
+import 'apps.dart';
 
 // Please place this code in main.dart,
 // After the import statements, and outside any Widget class (top-level)
@@ -55,15 +57,25 @@ void main() {
   ));
 }
 
+@override
+void activate() {
+  print('activated');
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => new _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+  var appsList = new List<Apps>();
   String _currentAddress;
   @override
   void initState() {
+    getApps();
+
+    _read();
+
     _getCurrentLocation();
     // Timer.periodic(Duration(seconds: 1), (timer) async {
     //   await _getCurrentLocation();
@@ -219,14 +231,18 @@ class _MyAppState extends State<MyApp> {
                               child: Icon(Icons.settings),
                             ),
                           ),
-                          TextSpan(text: 'Settings'),
+                          TextSpan(text: 'Select Apps'),
                         ],
                       ),
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Settings()));
+                      Route route =
+                          MaterialPageRoute(builder: (context) => Settings());
+                      Navigator.push(context, route).then(onGoBack);
+
+                      // Navigator.push(context,
+                      //   MaterialPageRoute(builder: (context) => Settings()));
                     },
                   )
                 ],
@@ -237,155 +253,35 @@ class _MyAppState extends State<MyApp> {
           appBar: AppBar(),
           widgets: <Widget>[Icon(Icons.more_vert)],
         ),
-        body: Container(
-            padding: EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(children: <Widget>[
-                SizedBox(
-                  width: double.infinity,
-                  child: Container(),
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Image.asset('images/spotify.png'),
-                            iconSize: 50, // MediaQuery.of(context).size.width
-                            onPressed: () {
-                              DeviceApps.openApp('com.spotify.music');
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Spotify',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Image.asset('images/waze.png'),
-                            iconSize: 50,
-                            onPressed: () {
-                              DeviceApps.openApp('com.waze');
-                            },
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Waze',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Image.asset('images/google-maps.png'),
-                            iconSize: 50,
+        body: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: GridView.builder(
+                itemCount: appsList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4),
+                itemBuilder: (context, position) {
+                  return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Center(
+                          child: Column(children: [
+                        Center(
+                          child: IconButton(
+                            icon: Image.memory(appsList[position].icon),
+                            iconSize: 85,
                             onPressed: () async {
-                              DeviceApps.openApp(
-                                  'com.google.android.apps.maps');
+                              DeviceApps.openApp(appsList[position].appPackage);
                             },
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Google Maps',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Image.asset('images/youtube.png'),
-                            iconSize: 50,
-                            onPressed: () {
-                              DeviceApps.openApp('com.google.android.youtube');
-                            },
-                          ),
-                          SizedBox(height: 25),
-                          Text(
-                            'Youtube',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Image.asset('images/whatsapp.png'),
-                            iconSize: 50,
-                            onPressed: () {
-                              DeviceApps.openApp('com.whatsapp');
-                            },
-                          ),
-                          SizedBox(height: 25),
-                          Text(
-                            'WhatsApp',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: <Widget>[
-                          IconButton(
-                            icon: Image.asset('images/chrome.png'),
-                            iconSize: 50,
-                            onPressed: () {
-                              DeviceApps.openApp('com.android.chrome');
-                            },
-                          ),
-                          SizedBox(height: 25),
-                          Text(
-                            'Chrome',
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 15),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ]),
-            )));
+                        ),
+                        Text(
+                          appsList[position].appName,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 17),
+                        )
+                      ])));
+                })));
   }
 
   _getAddressFromLatLng(Position _currentPosition) async {
@@ -408,14 +304,48 @@ class _MyAppState extends State<MyApp> {
         BaseAppBarLogo.city =
             "Speed: " + speed.toString() + " km/h" " - " + formatted;
         /* +
-            _currentAddress +
-            " - " +
-            formatted;*/
+                _currentAddress +
+                " - " +
+                formatted;*/
         //  print(_currentAddress);
       });
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<List<Application>> getApps() async {
+    List<Application> apps = await DeviceApps.getInstalledApplications(
+        includeAppIcons: true,
+        includeSystemApps: false,
+        onlyAppsWithLaunchIntent: true);
+    apps.sort((a, b) => a.toString().compareTo(b.toString()));
+
+    var selectedApps = await _read();
+
+    for (var app in apps) {
+      if (app is ApplicationWithIcon) {
+        if (selectedApps.contains(app.appName))
+          appsList.add(new Apps(1, app.appName, app.icon, app.packageName));
+      }
+    }
+
+    return apps;
+  }
+
+  Future<FutureOr> onGoBack(dynamic value) async {
+    appsList.clear();
+    await getApps();
+
+    setState(() {});
+  }
+
+  Future<List<String>> _read() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'app_list';
+    final value = prefs.getStringList(key) ?? "";
+    return value;
+    print('read: $value');
   }
 
   Future<void> _getCurrentLocation() async {
@@ -431,5 +361,16 @@ class _MyAppState extends State<MyApp> {
     });
 
     //print(position.speed);
+  }
+
+  Widget buildPartsRow(Apps appsList) {
+    return new Row(children: <Widget>[
+      new IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            //rowMap.remove(key);
+            setState(() {});
+          })
+    ]);
   }
 }
