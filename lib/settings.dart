@@ -133,7 +133,7 @@ class _MyAppState extends State<Settings> {
     // appsList.clear();
     List<Application> apps = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
-        includeSystemApps: false,
+        includeSystemApps: true,
         onlyAppsWithLaunchIntent: true);
     apps.sort((a, b) => a.toString().compareTo(b.toString()));
 

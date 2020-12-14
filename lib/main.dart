@@ -317,7 +317,7 @@ class _MyAppState extends State<MyApp> {
   Future<List<Application>> getApps() async {
     List<Application> apps = await DeviceApps.getInstalledApplications(
         includeAppIcons: true,
-        includeSystemApps: false,
+        includeSystemApps: true,
         onlyAppsWithLaunchIntent: true);
     apps.sort((a, b) => a.toString().compareTo(b.toString()));
 
