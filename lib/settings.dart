@@ -34,9 +34,9 @@ class _MyAppState extends State<Settings> {
             return MaterialApp(
               themeMode: ThemeMode.system,
               theme: ThemeData(
-                  primaryColor: Colors.white,
-                  primaryColorBrightness: Brightness.light,
-                  brightness: Brightness.light,
+                  //  primaryColor: Colors.white,
+                  //primaryColorBrightness: Brightness.light,
+                  //brightness: Brightness.light,
                   primaryColorDark: Colors.black,
                   canvasColor: Colors.white,
                   // next line is important!
@@ -102,7 +102,7 @@ class _MyAppState extends State<Settings> {
                               radius: 44.0,
                               backgroundImage:
                                   MemoryImage(appsList[index].icon),
-                              backgroundColor: Colors.white,
+                              //  backgroundColor: Colors.white,
                             ),
 
                             //Image.asset('images/spotify.png'),
