@@ -343,7 +343,11 @@ class _MyAppState extends State<MyApp> {
   Future<List<String>> _read() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'app_list';
-    final value = prefs.getStringList(key) ?? "";
+    var value = prefs.getStringList(key) ?? null;
+
+    if (value == null) {
+      value = ['Youtube', 'Chrome'];
+    }
     return value;
     print('read: $value');
   }

@@ -145,9 +145,14 @@ class _MyAppState extends State<Settings> {
           appsList.add(new Apps(1, app.appName, app.icon, app.packageName));
       }
 
-    for (var selectedApp in selectedApps) {
-      for (var app in appsList) {
-        if (app.appName == selectedApp) app.selected = true;
+    // First Load
+    var countSelectedApps = appsList.where((i) => i.selected).length;
+
+    if (selectedApps != null && countSelectedApps == 0) {
+      for (var selectedApp in selectedApps) {
+        for (var app in appsList) {
+          if (app.appName == selectedApp) app.selected = true;
+        }
       }
     }
 
@@ -172,7 +177,7 @@ class _MyAppState extends State<Settings> {
   Future<List<String>> _read() async {
     final prefs = await SharedPreferences.getInstance();
     final key = 'app_list';
-    final value = prefs.getStringList(key) ?? "";
+    final value = prefs.getStringList(key) ?? null;
     return value;
   }
 
