@@ -50,6 +50,16 @@ class _MyAppState extends State<Settings> {
                   appBarTheme: AppBarTheme(brightness: Brightness.dark)),
               home: Scaffold(
                 appBar: AppBar(
+                  leading: IconButton(
+                    iconSize: 30.0,
+                    icon: Icon(
+                      Icons.arrow_back,
+                      //  color: Colors.red,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                   title: Text("Installed Apps"),
                 ),
                 body: ListView(
