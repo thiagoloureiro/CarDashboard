@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+CameraPosition cp;
+Position globalPosition;
 void main() => runApp(MapDisplay());
 
 class MapDisplay extends StatelessWidget {
@@ -22,17 +25,34 @@ class MapSample extends StatefulWidget {
 
 class MapSampleState extends State<MapSample> {
   Completer<GoogleMapController> _controller = Completer();
+  @override
+  void initState() {
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    StreamSubscription<Position> positionStream =
+        Geolocator.getPositionStream().listen((Position position) async {
+      await _getAddressFromLatLng(position);
+    });
+  }
+
+  _getAddressFromLatLng(Position _currentPosition) async {
+    try {
+      globalPosition = _currentPosition;
+      var speed = ((_currentPosition.speed) * (60 * 60) / 1000).toInt();
+      print(speed);
+      print(_currentPosition.latitude);
+      print(_currentPosition.longitude);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +73,16 @@ class MapSampleState extends State<MapSample> {
   }
 
   Future<void> _goToTheLake() async {
+    cp = CameraPosition(
+      target: LatLng(globalPosition.latitude, globalPosition.longitude),
+      zoom: 14.4746,
+    );
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    controller.animateCamera(CameraUpdate.newCameraPosition(cp));
+  }
+
+  Future<void> _goToPosition(CameraPosition cp) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(cp));
   }
 }
