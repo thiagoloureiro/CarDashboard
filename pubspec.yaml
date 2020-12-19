@@ -31,6 +31,7 @@ dependencies:
   pushy_flutter: ^1.1.6
   sizer: ^1.1.7
   shared_preferences: ^0.5.12
+  google_maps_flutter: ^1.0.6
   flutter:
     sdk: flutter
 
