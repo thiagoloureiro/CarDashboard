@@ -360,7 +360,7 @@ class _MyAppState extends State<MyApp> {
       //           ', ' +
       //           position.longitude.toString());
     });
-    positionStream.cancel();
+    //  positionStream.cancel();
 
     //print(position.speed);
   }
