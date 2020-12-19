@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:cardashboard/settings.dart';
 import 'package:flutter/material.dart';
 
 class BaseAppBarLogo extends StatelessWidget implements PreferredSizeWidget {
@@ -42,8 +39,4 @@ class BaseAppBarLogo extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => new Size.fromHeight(appBar.preferredSize.height);
-
-  static _changeCity(String currentPosition) {
-    city = currentPosition;
-  }
 }

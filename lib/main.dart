@@ -69,7 +69,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var appsList = new List<Apps>();
-  String _currentAddress;
   @override
   void initState() {
     getApps();
@@ -349,20 +348,19 @@ class _MyAppState extends State<MyApp> {
       value = ['Youtube', 'Chrome'];
     }
     return value;
-    print('read: $value');
   }
 
   Future<void> _getCurrentLocation() async {
     StreamSubscription<Position> positionStream =
         Geolocator.getPositionStream().listen((Position position) async {
       await _getAddressFromLatLng(position);
-
       //   print(position == null
       //       ? 'Unknown'
       //       : position.latitude.toString() +
       //           ', ' +
       //           position.longitude.toString());
     });
+    positionStream.cancel();
 
     //print(position.speed);
   }
