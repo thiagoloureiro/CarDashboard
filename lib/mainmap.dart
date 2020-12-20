@@ -110,14 +110,6 @@ class _MyAppState extends State<MainMap> {
                                     },
                                   ),
                                 ),
-                                Text(
-                                  appsList[position].appName,
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 15),
-                                )
                               ])));
                         }),
                     childSecond: GoogleMap(
