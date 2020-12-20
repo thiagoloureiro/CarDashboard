@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -23,6 +25,7 @@ class _MyAppState extends State<MainMap> {
     getApps();
 
     _read();
+    _getCurrentLocation();
   }
 
   Completer<GoogleMapController> _controller = Completer();
@@ -90,36 +93,40 @@ class _MyAppState extends State<MainMap> {
                     ]),
                 body: Container(
                   child: SplitWidget(
-                    childFirst: GridView.builder(
-                        itemCount: appsList.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3),
-                        itemBuilder: (context, position) {
-                          return Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Center(
-                                  child: Column(children: [
-                                Center(
-                                  child: IconButton(
-                                    icon: Image.memory(appsList[position].icon),
-                                    iconSize:
-                                        MediaQuery.of(context).size.width / 15,
-                                    onPressed: () async {
-                                      DeviceApps.openApp(
-                                          appsList[position].appPackage);
-                                    },
+                      childFirst: GridView.builder(
+                          itemCount: appsList.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3),
+                          itemBuilder: (context, position) {
+                            return Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Center(
+                                    child: Column(children: [
+                                  Center(
+                                    child: IconButton(
+                                      icon:
+                                          Image.memory(appsList[position].icon),
+                                      iconSize:
+                                          MediaQuery.of(context).size.width /
+                                              15,
+                                      onPressed: () async {
+                                        DeviceApps.openApp(
+                                            appsList[position].appPackage);
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ])));
-                        }),
-                    childSecond: GoogleMap(
+                                ])));
+                          }),
+                      childSecond: _webView("http://maps.google.com/")
+                      /* GoogleMap(
                       mapType: MapType.normal,
                       initialCameraPosition: _kGooglePlex,
                       onMapCreated: (GoogleMapController controller) {
                         _controller.complete(controller);
                       },
-                    ),
-                  ),
+                    ),*/
+                      ),
                 ),
               ),
             );
@@ -165,5 +172,35 @@ class _MyAppState extends State<MainMap> {
       value = ['Youtube', 'Chrome'];
     }
     return value;
+  }
+
+  Future<void> _getCurrentLocation() async {
+    StreamSubscription<Position> positionStream =
+        Geolocator.getPositionStream().listen((Position position) async {
+      await _getAddressFromLatLng(position);
+      //   print(position == null
+      //       ? 'Unknown'
+      //       : position.latitude.toString() +
+      //           ', ' +
+      //           position.longitude.toString());
+    });
+    //  positionStream.cancel();
+
+    //print(position.speed);
+  }
+
+  _getAddressFromLatLng(Position _currentPosition) async {
+    try {
+      DateTime now = DateTime.now();
+      DateFormat formatter = DateFormat('HH:mm:ss');
+      String formatted = formatter.format(now);
+
+      var speed = ((_currentPosition.speed) * (60 * 60) / 1000).toInt();
+      print(speed);
+      print(_currentPosition.latitude);
+      print(_currentPosition.longitude);
+    } catch (e) {
+      print(e);
+    }
   }
 }
