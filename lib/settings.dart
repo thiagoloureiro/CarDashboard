@@ -124,7 +124,7 @@ class _MyAppState extends State<Settings> {
               ),
             );
           } else {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
         });
   }

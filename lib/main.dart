@@ -10,6 +10,7 @@ import 'appbarlogo.dart';
 import 'package:flutter/services.dart';
 import 'package:pushy_flutter/pushy_flutter.dart';
 import 'apps.dart';
+import 'mainmap.dart';
 import 'map.dart';
 
 // Please place this code in main.dart,
@@ -266,6 +267,30 @@ class _MyAppState extends State<MyApp> {
                       Navigator.pop(context);
                       Route route =
                           MaterialPageRoute(builder: (context) => MapDisplay());
+                      Navigator.push(context, route).then(onGoBack);
+                    },
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyText1,
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Icon(Icons.apps),
+                            ),
+                          ),
+                          TextSpan(text: 'Apps/Map'),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Route route =
+                          MaterialPageRoute(builder: (context) => MainMap());
                       Navigator.push(context, route).then(onGoBack);
                     },
                   )
