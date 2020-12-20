@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'SplitWidget.dart';
 import 'apps.dart';
@@ -20,6 +21,7 @@ class MainMap extends StatefulWidget {
 
 class _MyAppState extends State<MainMap> {
   var appsList = new List<Apps>();
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
   @override
   void initState() {
     getApps();
@@ -118,7 +120,7 @@ class _MyAppState extends State<MainMap> {
                                   ),
                                 ])));
                           }),
-                      childSecond: _webView("http://maps.google.com/")
+                      childSecond: _webView("https://mobile.here.com/")
                       /* GoogleMap(
                       mapType: MapType.normal,
                       initialCameraPosition: _kGooglePlex,
@@ -136,9 +138,17 @@ class _MyAppState extends State<MainMap> {
         });
   }
 
-  _webView(final String url) => WebView(
-        initialUrl: url,
-        javascriptMode: JavascriptMode.unrestricted,
+  // _webView(final String url) => WebView(
+  //     initialUrl: url,
+  //   javascriptMode: JavascriptMode.unrestricted,
+  // );
+
+  _webView(final String url) => WebviewScaffold(
+        url: url,
+        withZoom: false,
+        invalidUrlRegex: '^intent:',
+        // hidden: true,
+        geolocationEnabled: true,
       );
 
   Future<List<Application>> getApps() async {
