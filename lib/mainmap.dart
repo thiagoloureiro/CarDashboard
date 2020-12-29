@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
@@ -7,8 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import 'SplitWidget.dart';
 import 'apps.dart';
 
@@ -20,7 +17,7 @@ class MainMap extends StatefulWidget {
 }
 
 class _MyAppState extends State<MainMap> {
-  var appsList = new List<Apps>();
+  var appsList = <Apps>[];
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
   @override
   void initState() {
@@ -205,7 +202,7 @@ class _MyAppState extends State<MainMap> {
       DateFormat formatter = DateFormat('HH:mm:ss');
       String formatted = formatter.format(now);
 
-      var speed = ((_currentPosition.speed) * (60 * 60) / 1000).toInt();
+      var speed = (_currentPosition.speed) * (60 * 60) ~/ 1000;
       print(speed);
       print(_currentPosition.latitude);
       print(_currentPosition.longitude);

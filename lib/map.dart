@@ -40,7 +40,7 @@ class MapSampleState extends State<MapSample> {
   _getAddressFromLatLng(Position _currentPosition) async {
     try {
       globalPosition = _currentPosition;
-      var speed = ((_currentPosition.speed) * (60 * 60) / 1000).toInt();
+      var speed = (_currentPosition.speed) * (60 * 60) ~/ 1000;
       print(speed);
       print(_currentPosition.latitude);
       print(_currentPosition.longitude);

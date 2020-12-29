@@ -70,7 +70,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var appsList = new List<Apps>();
+  var appsList = <Apps>[];
   @override
   void initState() {
     getApps();
@@ -348,7 +348,7 @@ class _MyAppState extends State<MyApp> {
         DateFormat formatter = DateFormat('HH:mm:ss');
         String formatted = formatter.format(now);
 
-        var speed = ((_currentPosition.speed) * (60 * 60) / 1000).toInt();
+        var speed = (_currentPosition.speed) * (60 * 60) ~/ 1000;
 
         BaseAppBarLogo.city =
             "Speed: " + speed.toString() + " km/h" " - " + formatted;
@@ -401,8 +401,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _getCurrentLocation() async {
-    StreamSubscription<Position> positionStream =
-        Geolocator.getPositionStream().listen((Position position) async {
+    //StreamSubscription<Position> positionStream =
+    Geolocator.getPositionStream().listen((Position position) async {
       await _getAddressFromLatLng(position);
       //   print(position == null
       //       ? 'Unknown'

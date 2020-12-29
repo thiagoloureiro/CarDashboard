@@ -13,7 +13,7 @@ class Settings extends StatefulWidget {
 }
 
 class _MyAppState extends State<Settings> {
-  var appsList = new List<Apps>();
+  var appsList = <Apps>[];
   double padValue = 0;
 
   @override
@@ -185,7 +185,7 @@ class _MyAppState extends State<Settings> {
     final prefs = await SharedPreferences.getInstance();
     final key = 'app_list';
 
-    var selectedApps = new List<String>();
+    var selectedApps = <String>[];
 
     for (var app in appsList) {
       if (app.selected) selectedApps.add(app.appName);
