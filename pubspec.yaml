@@ -21,28 +21,27 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  device_apps: "^1.2.0"
-  geolocator: ^6.1.8
-  geocoding: ^1.0.5
-  rflutter_alert: ^1.1.0
-  android_alarm_manager: ^0.4.5
-  flutter_launcher_icons: "^0.8.1"
-  intl: ^0.16.1
-  pushy_flutter: ^1.1.6
-  sizer: ^1.1.7
-  shared_preferences: ^0.5.12
-  google_maps_flutter: ^1.0.6
-  flutter_webview_plugin : ^0.3.11
-  url_launcher: ^5.7.0
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  android_alarm_manager: ^0.4.5
   cupertino_icons: ^1.0.0
+  device_apps: ^1.2.0
+  flutter_launcher_icons: ^0.8.1
+  flutter_webview_plugin: ^0.3.11
+  geocoding: ^1.0.5
+  geolocator: ^6.1.8
+  google_maps_flutter: ^1.0.6
+  intl: ^0.16.1
+  pushy_flutter: ^1.1.6
+  rflutter_alert: ^1.1.0
+  shared_preferences: ^0.5.12
+  sizer: ^1.1.7
+  spotify_sdk: ^1.0.0
+  url_launcher: ^5.7.0
+  flutter_dotenv: ^2.1.0
 
 flutter_icons:
-  image_path: "images/apps.png" 
+  image_path: "images/apps.png"
   android: true
   ios: true
 
@@ -52,7 +51,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter.
 flutter:
 
@@ -68,15 +66,12 @@ flutter:
     - images/waze.png
     - images/youtube.png
     - images/whatsapp.png
-    - images/apps.png  
+    - images/apps.png
     - images/chrome.png
-    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

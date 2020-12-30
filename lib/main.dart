@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:cardashboard/settings.dart';
+import 'package:cardashboard/spotify.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,7 +36,8 @@ void backgroundNotificationListener(Map<String, dynamic> data) {
   Pushy.clearBadge();
 }
 
-void main() {
+Future<void> main() async {
+  await DotEnv().load('.env');
   runApp(new MaterialApp(
     themeMode: ThemeMode.system, // Change it as you want
     theme: ThemeData(
@@ -291,6 +294,30 @@ class _MyAppState extends State<MyApp> {
                       Navigator.pop(context);
                       Route route =
                           MaterialPageRoute(builder: (context) => MainMap());
+                      Navigator.push(context, route).then(onGoBack);
+                    },
+                  ),
+                  ListTile(
+                    title: RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.bodyText1,
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Icon(Icons.apps),
+                            ),
+                          ),
+                          TextSpan(text: 'Spotify'),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Route route =
+                          MaterialPageRoute(builder: (context) => Spotify());
                       Navigator.push(context, route).then(onGoBack);
                     },
                   )
