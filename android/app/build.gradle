@@ -55,6 +55,11 @@ android {
         manifestPlaceholders = [MAPS_API_KEY: MAPS_API_KEY]
     }
 
+    lintOptions {
+            disable 'InvalidPackage'
+            checkReleaseBuilds false
+    }
+
     signingConfigs {
         release {
             storeFile rootProject.file("app/android.keystore")
