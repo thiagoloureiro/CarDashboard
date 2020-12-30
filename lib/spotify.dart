@@ -35,6 +35,25 @@ class _HomeState extends State<Spotify> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system, // Change it as you want
+      theme: ThemeData(
+          primaryColor: Colors.white,
+          primaryColorBrightness: Brightness.light,
+          brightness: Brightness.light,
+          primaryColorDark: Colors.black,
+          canvasColor: Colors.white,
+          // next line is important!
+          appBarTheme: AppBarTheme(brightness: Brightness.light)),
+      darkTheme: ThemeData(
+          //   primaryColor: Colors.black,
+          primaryColorBrightness: Brightness.dark,
+          //   primaryColorLight: Colors.black,
+          brightness: Brightness.dark,
+          //   primaryColorDark: Colors.black,
+          //   indicatorColor: Colors.white,
+          //   canvasColor: Colors.black,
+          // next line is important!
+          appBarTheme: AppBarTheme(brightness: Brightness.dark)),
       home: StreamBuilder<ConnectionStatus>(
         stream: SpotifySdk.subscribeConnectionStatus(),
         builder: (context, snapshot) {
@@ -354,8 +373,8 @@ class _HomeState extends State<Spotify> {
         _loading = true;
       });
       var result = await SpotifySdk.connectToSpotifyRemote(
-          clientId: DotEnv().env['CLIENT_ID'].toString(),
-          redirectUrl: DotEnv().env['REDIRECT_URL'].toString());
+          clientId: 'c35f7ae801e4423bb8ba2d30e441202c',
+          redirectUrl: 'com.cardashboard://callback');
       setStatus(result
           ? 'connect to spotify successful'
           : 'connect to spotify failed');
