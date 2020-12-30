@@ -10,6 +10,10 @@ jobs:
   build:
     name: Build APK
     runs-on: ubuntu-latest
+    env:
+      APPCENTER_KEYSTORE_PASSWORD: ${{ secrets.APPCENTER_KEYSTORE_PASSWORD }}
+      APPCENTER_KEY_ALIAS: ${{ secrets.APPCENTER_KEY_ALIAS }}
+      APPCENTER_KEY_PASSWORD: ${{ secrets.APPCENTER_KEY_PASSWORD }}
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-java@v1
