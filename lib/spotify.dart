@@ -14,6 +14,7 @@ import 'widgets/sized_icon_button.dart';
 
 Future<void> main() async {
   await DotEnv().load('.env');
+
   runApp(Spotify());
 }
 
@@ -29,6 +30,11 @@ class _HomeState extends State<Spotify> {
   bool _loading = false;
   bool _connected = false;
   final Logger _logger = Logger();
+
+  @override
+  void initState() {
+    connectToSpotifyRemote();
+  }
 
   CrossfadeState crossfadeState;
 
