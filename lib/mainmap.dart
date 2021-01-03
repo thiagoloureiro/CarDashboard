@@ -92,31 +92,43 @@ class _MyAppState extends State<MainMap> {
                     ]),
                 body: Container(
                   child: SplitWidget(
-                      childFirst: GridView.builder(
-                          itemCount: appsList.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3),
-                          itemBuilder: (context, position) {
-                            return Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Center(
-                                    child: Column(children: [
-                                  Center(
-                                    child: IconButton(
-                                      icon:
-                                          Image.memory(appsList[position].icon),
-                                      iconSize:
-                                          MediaQuery.of(context).size.width /
-                                              15,
-                                      onPressed: () async {
-                                        DeviceApps.openApp(
-                                            appsList[position].appPackage);
-                                      },
-                                    ),
-                                  ),
-                                ])));
-                          }),
+                      childFirst: ListView(
+                          // Important: Remove any padding from the ListView.
+                          padding: EdgeInsets.zero,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 430,
+                              child: GridView.builder(
+                                  itemCount: appsList.length,
+                                  gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3),
+                                  itemBuilder: (context, position) {
+                                    return Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Center(
+                                          child: Column(children: [
+                                            Center(
+                                              child: IconButton(
+                                                icon: Image.memory(
+                                                    appsList[position].icon),
+                                                iconSize: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    15,
+                                                onPressed: () async {
+                                                  DeviceApps.openApp(
+                                                      appsList[position]
+                                                          .appPackage);
+                                                },
+                                              ),
+                                            ),
+                                          ]),
+                                        ));
+                                  }),
+                            ),
+                            Image(image: AssetImage('images/controls.png'))
+                          ]),
                       childSecond: _webView("https://mobile.here.com/")
                       /* GoogleMap(
                       mapType: MapType.normal,
