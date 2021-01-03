@@ -30,6 +30,7 @@ class _HomeState extends State<Spotify> {
   bool _loading = false;
   bool _connected = false;
   final Logger _logger = Logger();
+  String status = "test";
 
   @override
   void initState() {
@@ -193,9 +194,10 @@ class _HomeState extends State<Spotify> {
             // ignore: prefer_single_quotes
             Text("Duration: ${crossfadeState?.duration}"),
             const Divider(),
-            _connected
-                ? spotifyImageWidget()
-                : const Text('Connect to see an image...'),
+            Text(status)
+            //_connected
+            //  ? spotifyImageWidget()
+            //: const Text('Connect to see an image...'),
           ],
         ),
         _loading
@@ -582,5 +584,9 @@ class _HomeState extends State<Spotify> {
   void setStatus(String code, {String message = ''}) {
     var text = message.isEmpty ? '' : ' : $message';
     _logger.d('$code$text');
+    if (text != "")
+      status = text;
+    else
+      status = code;
   }
 }
